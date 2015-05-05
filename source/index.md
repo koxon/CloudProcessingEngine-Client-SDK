@@ -1,16 +1,16 @@
 ---
-title: API Reference
+title: Cloud Transcode SDK reference
 
 language_tabs:
-  - shell
-  - ruby
-  - python
+  - php: PHP
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
+  - <a href='http://sportarchive.github.io/CloudTranscode/' target="_blank">Cloud Transcode Stack documentation</a>
 
 includes:
+  - sending
+  - listening
+  - outputs
   - errors
 
 search: true
@@ -18,151 +18,80 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+> The PHP SDK repo is here:<br>
+> <a href="https://github.com/sportarchive/CloudTranscode-PHP-SDK" target="_blank">https://github.com/sportarchive/CloudTranscode-PHP-SDK</a>
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+Welcome to the Cloud Transcode (CT) SDK documentation.
 
-This example API documentation page was created with [Slate](http://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+The CT SDK allow you to communicate with the CT stack:
 
-# Authentication
+   - Submit Jobs
+   - Listen to updates
+   - Cancel Jobs
+   - Get status
 
-> To authorize, use this code:
+It is a wrapper around AWS SQS. It reads and writes the proper JSON format expected by the CT stack.
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Isis",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/3"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
+# Dependencies
 
 ```json
 {
-  "id": 2,
-  "name": "Isis",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+	"name": "YOUR CLIENT NAME",
+	"queues": {
+		  "input": "https://sqs.[region].amazonaws.com/[AWS account]/[sqs-input-queue-name]",
+		  "output": "https://sqs.[region].amazonaws.com/[AWS account]/[sqs-output-queue-name]"
+	}
 }
 ```
 
-This endpoint retrieves a specific kitten.
+Before integrating the SDK into your application, you must register your application into the stack.
 
-<aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
+The stack maintains a list of clients in its configuration file.
+Each client has the following information:
 
-### HTTP Request
+   - name: The name of the client.
+   - queues: The input and output SQS queues dedicated for this client.
 
-`GET http://example.com/kittens/<ID>`
+Make a copy of the JSON object defining your client and save into your application.
 
-### URL Parameters
+The CT SDK will use your client definition in order to know the SQS queues to use for reading and writing messages. It expects a raw JSON text.
 
-Parameter | Description
---------- | -----------
-ID | The ID of the cat to retrieve
+# Install
+
+> Use Composer to install the PHP SDK<br>
+> <a href="https://packagist.org/packages/sportarchive/cloud-transcode-php-sdk" target="_blank">https://packagist.org/packages/sportarchive/cloud-transcode-php-sdk</a>
+
+```json
+{
+    "require":
+    {
+        "sportarchive/cloud-transcode-php-sdk": "dev-master"
+    }
+}
+```
+
+Install the CT SDK in your project using the proper dependency manager for your language.
+
+<aside class="notice">
+You can also install it by hand by just copying the file in your project.
+</aside>
+
+# Instantiate
+
+> Pass your AWS credentials to the constructor and your client JSON .
+
+```ruby
+/* Composer autoload to be at the top of your file */
+require __DIR__ . "/../vendor/autoload.php";
+
+$CTComSDK = new SA\CTComSDK($key, $secret, $region, $client_def, $debug);
+```
+
+In your application, instantiate the SDK to access its methods.
+
+   - key: AWS Key
+   - secret: AWS Secret
+   - region: AWS region
+   - client_def: String containg JSON client definition (same as in the Stack config file)
+
 
