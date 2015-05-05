@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>Cloud Transcode SDK reference</title>
 
     <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["shell","ruby","python"]);
+          setupLanguages(["php"]);
         });
       </script>
   </head>
@@ -26,11 +26,11 @@
       </span>
     </a>
     <div class="tocify-wrapper">
-      <img src="images/logo.png" />
+      <div>
+	<h3 style="text-align: center; color: #fff">Cloud Transcode SDK</h3>
+      </div>
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
+              <a href="#" data-language-name="php">PHP</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -39,235 +39,604 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='http://sportarchive.github.io/CloudTranscode/' target="_blank">Cloud Transcode Stack documentation</a></li>
         </ul>
+      <h5 style="text-align: center; color: #fff">Project sponsored by</h5>
+      <h5 style="text-align: center;"><img src="images/logo.png" /></h5>
+      <h5 style="text-align: center; color: #fff">Sport Archive Inc.</h5>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
-
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
-
-<p>This example API documentation page was created with <a href="http://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
-
-<h1 id="authentication">Authentication</h1>
-
 <blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
+<p>The PHP SDK repo is here:<br>
+<a href="https://github.com/sportarchive/CloudTranscode-PHP-SDK" target="_blank">https://github.com/sportarchive/CloudTranscode-PHP-SDK</a></p>
 </blockquote>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p>Welcome to the Cloud Transcode (CT) SDK documentation.</p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<p>The CT SDK allow you to communicate with the CT stack:</p>
 
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
+<ul>
+<li>Submit Jobs</li>
+<li>Listen to updates</li>
+<li>Cancel Jobs</li>
+<li>Get status</li>
+</ul>
 
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
+<p>It is a wrapper around AWS SQS. It reads and writes the proper JSON format expected by the CT stack.</p>
 
-<h1 id="kittens">Kittens</h1>
-
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-
-<p>This endpoint retrieves all kittens.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody></table>
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/3"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
+<h1 id="dependencies">Dependencies</h1>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"YOUR CLIENT NAME"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"queues"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"input"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://sqs.[region].amazonaws.com/[AWS account]/[sqs-input-queue-name]"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://sqs.[region].amazonaws.com/[AWS account]/[sqs-output-queue-name]"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>This endpoint retrieves a specific kitten.</p>
+<p>Before integrating the SDK into your application, you must register your application into the stack.</p>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
+<p>The stack maintains a list of clients in its configuration file.
+Each client has the following information:</p>
 
-<h3 id="http-request">HTTP Request</h3>
+<ul>
+<li>name: The name of the client.</li>
+<li>queues: The input and output SQS queues dedicated for this client.</li>
+</ul>
 
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
+<p>Make a copy of the JSON object defining your client and save into your application.</p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<p>The CT SDK will use your client definition in order to know the SQS queues to use for reading and writing messages. It expects a raw JSON text.</p>
+
+<h1 id="install">Install</h1>
+
+<blockquote>
+<p>Use Composer to install the PHP SDK<br>
+<a href="https://packagist.org/packages/sportarchive/cloud-transcode-php-sdk" target="_blank">https://packagist.org/packages/sportarchive/cloud-transcode-php-sdk</a></p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"require"</span><span class="p">:</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"sportarchive/cloud-transcode-php-sdk"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dev-master"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Install the CT SDK in your project using the proper dependency manager for your language.</p>
+
+<aside class="notice">
+You can also install it by hand by just copying the file in your project.
+</aside>
+
+<h1 id="instantiate">Instantiate</h1>
+
+<blockquote>
+<p>Pass your AWS credentials to the constructor and your client JSON .</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="sr">/* Composer autoload to be at the top of your file */</span>
+<span class="nb">require</span> <span class="n">__DIR__</span> <span class="o">.</span> <span class="s2">"/../vendor/autoload.php"</span><span class="p">;</span>
+
+<span class="vg">$CTComSDK</span> <span class="o">=</span> <span class="kp">new</span> <span class="no">SA</span><span class="p">\</span><span class="no">CTComSDK</span><span class="p">(</span><span class="vg">$key</span><span class="p">,</span> <span class="vg">$secret</span><span class="p">,</span> <span class="vg">$region</span><span class="p">,</span> <span class="vg">$client_def</span><span class="p">,</span> <span class="vg">$debug</span><span class="p">);</span>
+</code></pre>
+
+<p>In your application, instantiate the SDK to access its methods.</p>
+
+<ul>
+<li>key: AWS Key</li>
+<li>secret: AWS Secret</li>
+<li>region: AWS region</li>
+<li>client_def: String containg JSON client definition (same as in the Stack config file)</li>
+</ul>
+
+          <h1 id="sending-commands">Sending commands</h1>
+
+<h2 id="start-job">Start Job</h2>
+<pre class="highlight ruby"><code><span class="sr">/**
+ * $json_input: Contains the Job description
+ * $job_id: You must generate it and save it somewhere.
+**/</span>
+<span class="vg">$CTComSDK</span><span class="o">-&gt;</span><span class="n">start_job</span><span class="p">(</span><span class="vg">$json_input</span><span class="p">,</span> <span class="vg">$job_id</span><span class="p">);</span>
+</code></pre>
+
+<aside class="notice">
+Call this method to start a new Transcoding Job. This method will take your JSON payload and will send it to the &lsquo;input&rsquo; SQS queue configured for your client.
+</aside>
+
+<p>The JSON input you pass in parameter contains information about the input file you want to transcode, and an array of objects listing and describing the output files you want.</p>
+
+<p>Each object in the output array, describe one output file. They could be of different types. For example you can generate an AUDIO file out of a VIDEO. Or a THUMB out of a VIDEO.</p>
+
+<p>The most simple and obvious usage is VIDEO to VIDEO.</p>
+
+<p><b>See JSON input example at:</b><br>
+<a href="https://github.com/sportarchive/CloudTranscode/tree/master/client_example/input_samples" target="_blank">https://github.com/sportarchive/CloudTranscode/tree/master/client_example/input_samples</a></p>
+
+<h3 id="input-description">Input description</h3>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"input_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VIDEO"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"input_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-in"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"input_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/input1/test1.mp4"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> 
+    </span><span class="p">[</span><span class="w">
+</span></code></pre>
+
+<p>This describe the JSON field describing the input file.</p>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Description</th>
+<th>key</th>
+<th>type</th>
+<th>default</th>
+<th>mandatory</th>
+<th>description</th>
+<th>values</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the cat to retrieve</td>
+<td>input_type</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>Type of the input file to transcode</td>
+<td>VIDEO, AUDIO, DOC, IMG</td>
+</tr>
+<tr>
+<td>input_bucket</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>S3 bucket name</td>
+<td>any</td>
+</tr>
+<tr>
+<td>input_file</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>filename of the file to download</td>
+<td>any</td>
+</tr>
+<tr>
+<td>job_label</td>
+<td>string</td>
+<td>job_id</td>
+<td>no</td>
+<td>Give a name to your job</td>
+<td>any</td>
+</tr>
+<tr>
+<td>outputs</td>
+<td>array</td>
+<td>none</td>
+<td>yes</td>
+<td>List of all the outputs needed for that job</td>
+<td>array of max 100 entries</td>
 </tr>
 </tbody></table>
+
+<h3 id="common-output-description">Common Output description</h3>
+
+<p>These are the common JSON fields describing any output files of any types.</p>
+
+<p>The output_type field is dependent on the input_type field. You cannot convert a VIDEO into a DOC for example.</p>
+
+<table><thead>
+<tr>
+<th>key</th>
+<th>type</th>
+<th>default</th>
+<th>mandatory</th>
+<th>description</th>
+<th>values</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>output_type</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>Type of the file to ouput</td>
+<td>VIDEO, THUMB, AUDIO, DOC, IMG</td>
+</tr>
+<tr>
+<td>output_bucket</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>S3 bucket where the ouput file will be uploaded</td>
+<td>any</td>
+</tr>
+<tr>
+<td>output_file</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>Path and filename of the file to generate and upload</td>
+<td>any</td>
+</tr>
+<tr>
+<td>s3_rrs</td>
+<td>string</td>
+<td>false</td>
+<td>no</td>
+<td>Activate Reduced redundancy or not in S3 storage</td>
+<td>true, false</td>
+</tr>
+<tr>
+<td>s3_encrypt</td>
+<td>string</td>
+<td>false</td>
+<td>no</td>
+<td>Activate backend storage encryption</td>
+<td>true,false</td>
+</tr>
+</tbody></table>
+
+<h3 id="video-output-description">Video Output description</h3>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+</span><span class="err">...</span><span class="w">
+    </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"output_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VIDEO"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"output_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-out"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"output_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/output1/test1_sd.mp4"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s3_rrs"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s3_encrypt"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"preset"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"System preset: Generic iphone4S"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Generic transcoding preset for: iPhone 4s and above, iPad 3G and above, iPad mini, Samsung Galaxy S2/S3/Tab 2"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1920x1080"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"frame_rate"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"video_bitrate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5000k"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"audio_bitrate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"160k"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"video_codec"</span><span class="p">:</span><span class="w"> </span><span class="s2">"libx264"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"audio_codec"</span><span class="p">:</span><span class="w"> </span><span class="s2">"libfdk_aac"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"video_codec_options"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MaxReferenceFrames:3,Profile:high,Level:4.1"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"watermark"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"input_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-in"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"input_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/watermark/logo.png"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75.2x28.4"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"opacity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"x"</span><span class="p">:</span><span class="w"> </span><span class="mi">-20</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"y"</span><span class="p">:</span><span class="w"> </span><span class="mi">-20</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>There are the JSON fields describing VIDEO output files.</p>
+
+<table><thead>
+<tr>
+<th>key</th>
+<th>type</th>
+<th>default</th>
+<th>mandatory</th>
+<th>description</th>
+<th>values</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>preset</td>
+<td>object</td>
+<td>none</td>
+<td>yes</td>
+<td>Preset to use to transcode the file</td>
+<td><a href="https://github.com/sportarchive/CloudTranscode-FFMpeg-presets" target="_blank">Find presets</a></td>
+</tr>
+<tr>
+<td>size</td>
+<td>string</td>
+<td>original size</td>
+<td>no</td>
+<td>Define output size. Valid for videos and images only</td>
+<td><width>x<height></td>
+</tr>
+<tr>
+<td>video_codec</td>
+<td>string</td>
+<td>from preset</td>
+<td>no</td>
+<td>Override the video codec used by preset</td>
+<td>ffmpeg codec</td>
+</tr>
+<tr>
+<td>audio_codec</td>
+<td>string</td>
+<td>from preset</td>
+<td>no</td>
+<td>Override the audio codec used by preset</td>
+<td>ffmpeg codec</td>
+</tr>
+<tr>
+<td>video_bitrate</td>
+<td>string</td>
+<td>from preset</td>
+<td>no</td>
+<td>Override video bitrate used by preset</td>
+<td>valid bitrate</td>
+</tr>
+<tr>
+<td>audio_bitrate</td>
+<td>string</td>
+<td>from preset</td>
+<td>no</td>
+<td>Override audio bitrate used by preset</td>
+<td>valid bitrate</td>
+</tr>
+<tr>
+<td>frame_rate</td>
+<td>string</td>
+<td>from preset</td>
+<td>no</td>
+<td>Override framerate used by preset</td>
+<td>valid framerate</td>
+</tr>
+<tr>
+<td>watermark</td>
+<td>object</td>
+<td>none</td>
+<td>no</td>
+<td>Describe watermark for the video</td>
+<td>see <a href="#watermark">Watermark</a> section</td>
+</tr>
+<tr>
+<td>keep_ratio</td>
+<td>boolean</td>
+<td>true</td>
+<td>no</td>
+<td>Keep the ratio of the original video. 4:3 or 16:9</td>
+<td>true,false</td>
+</tr>
+<tr>
+<td>no_enlarge</td>
+<td>boolean</td>
+<td>true</td>
+<td>no</td>
+<td>Prevent enlarging the video size from original, even if bigger size is provided.</td>
+<td>true,false</td>
+</tr>
+</tbody></table>
+
+<h4 id="watermark-object">Watermark object</h4>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+</span><span class="err">...</span><span class="w">
+    </span><span class="s2">"watermark"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"input_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-in"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"input_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/watermark/logo.png"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75.2x28.4"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"opacity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"x"</span><span class="p">:</span><span class="w"> </span><span class="mi">-20</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"y"</span><span class="p">:</span><span class="w"> </span><span class="mi">-20</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Use this object within a VIDEO output description to overlay an image on top of the video.</p>
+
+<p>You can control many aspects of that image using the options below.</p>
+
+<table><thead>
+<tr>
+<th>key</th>
+<th>type</th>
+<th>default</th>
+<th>mandatory</th>
+<th>description</th>
+<th>values</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>input_butcket</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>Bucket name where the watermark is located</td>
+<td>any</td>
+</tr>
+<tr>
+<td>input_file</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>Filename and path of the file containing the watermark</td>
+<td>any</td>
+</tr>
+<tr>
+<td>size</td>
+<td>string</td>
+<td>file default size</td>
+<td>no</td>
+<td>Size of the watermark in the video result</td>
+<td>any</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>string</td>
+<td>0.7</td>
+<td>no</td>
+<td>Change the default watermark opacity</td>
+<td>0.1 to 1.0</td>
+</tr>
+<tr>
+<td>x</td>
+<td>string</td>
+<td>-10</td>
+<td>no</td>
+<td>Change the watermark position. In pixels.</td>
+<td>-0 to -n, 0 to n</td>
+</tr>
+<tr>
+<td>y</td>
+<td>string</td>
+<td>-10</td>
+<td>no</td>
+<td>Change the watermark position. In pixels.</td>
+<td>-0 to -n, 0 to n</td>
+</tr>
+</tbody></table>
+
+<h3 id="thumb-output-description">Thumb Output description</h3>
+
+<blockquote>
+<p>Generates a thumbnail from a precise location in the video (in seconds)</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+</span><span class="err">...</span><span class="w">
+    </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"output_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"THUMB"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"snapshot"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"output_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-out"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"output_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/output1/thumbs/test1_thumb.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s3_rrs"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s3_encrypt"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"160x120"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"snapshot_sec"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p>Generates N thumbnails at each intervals (in seconds)</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+</span><span class="err">...</span><span class="w">
+    </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"output_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"THUMB"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"intervals"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"output_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-out"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"output_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/output1/thumbs_interval/test2_thumb.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s3_rrs"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s3_encrypt"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"160x120"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"intervals"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>These are the output attributes you must provide to generate thumbnails from a video. Thumbnails are an output_type on its own.</p>
+
+<table><thead>
+<tr>
+<th>key</th>
+<th>type</th>
+<th>default</th>
+<th>mandatory</th>
+<th>description</th>
+<th>values</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>mode</td>
+<td>string</td>
+<td>snapshot</td>
+<td>no</td>
+<td>Type of thumbnails generation needed</td>
+<td>snapshot, intervals</td>
+</tr>
+<tr>
+<td>output_bucket</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>S3 bucket and path where the ouput thumbnails will be uploaded</td>
+<td>any</td>
+</tr>
+<tr>
+<td>output_file</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>filename for your thumbnails.We will append sequence number</td>
+<td>any</td>
+</tr>
+<tr>
+<td>intervals</td>
+<td>integer</td>
+<td>10</td>
+<td>no</td>
+<td>Override default interval in seconds.</td>
+<td>any</td>
+</tr>
+<tr>
+<td>snapshot_sec</td>
+<td>interger</td>
+<td>0</td>
+<td>no</td>
+<td>Second in the video when to take the snapshot</td>
+<td>any</td>
+</tr>
+<tr>
+<td>size</td>
+<td>string</td>
+<td>none</td>
+<td>yes</td>
+<td>Size of the thumbnails</td>
+<td>any</td>
+</tr>
+</tbody></table>
+
+<h2 id="cancel-job">Cancel Job</h2>
+
+<h2 id="get-job-list">Get Job List</h2>
+
+<h2 id="get-job-status">Get Job Status</h2>
+
+          <h1 id="listening-for-updates">Listening for updates</h1>
+<pre class="highlight ruby"><code><span class="sr">/* Keep polling for messages! Forever ... */</span>
+<span class="k">while</span> <span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">try</span> <span class="p">{</span>
+        <span class="sr">/* Will poll for 10 seconds then return */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="vg">$msg</span> <span class="o">=</span> <span class="vg">$CTComSDK</span><span class="o">-&gt;</span><span class="n">receive_message</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="vg">$decoded</span> <span class="o">=</span> <span class="n">json_decode</span><span class="p">(</span><span class="vg">$msg</span><span class="p">[</span><span class="s1">'Body'</span><span class="p">])))</span>
+                <span class="kp">throw</span> <span class="kp">new</span> <span class="no">Exception</span><span class="p">(</span><span class="s2">"JSON data is invalid!"</span><span class="p">);</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="sr">/* Custom function that will parse the JSON data and do something */</span>
+                <span class="n">parse_output</span><span class="p">(</span><span class="vg">$decoded</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="sr">/* Message polled. We delete it from SQS */</span>
+            <span class="vg">$CTComSDK</span><span class="o">-&gt;</span><span class="n">delete_message</span><span class="p">(</span><span class="vg">$msg</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="kp">catch</span> <span class="p">(</span><span class="no">Exception</span> <span class="vg">$e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"[ERROR] "</span> <span class="o">.</span> <span class="vg">$e</span><span class="o">-&gt;</span><span class="n">getMessage</span><span class="p">()</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<aside class="notice">
+Call this method to retrieve a possible message from the stack. This method polls messages from the &lsquo;output&rsquo; SQS channel configured for your client.
+</aside>
+
+<p>The method will poll the &#39;output&rsquo; SQS queue. If no message are present it returns &#39;false&rsquo;.
+If there is a message, it returns the String containing this message.</p>
+
+          <h1 id="outputs">Outputs</h1>
+
+<p>Here we must list the outputs the Stack is sending back to the clients</p>
 
           <h1 id="errors">Errors</h1>
 
-<aside class="notice">This error section is stored in a separate file in `includes/_errors.md`. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the `includes` folder and add them to the top of your `index.md`&rsquo;s frontmatter. Files are included in the order listed.</aside>
-
-<p>The Kittn API uses the following error codes:</p>
-
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
-</tr>
-</tbody></table>
+<aside class="notice">Error to be listed here!</aside>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
+                <a href="#" data-language-name="php">PHP</a>
           </div>
       </div>
     </div>
