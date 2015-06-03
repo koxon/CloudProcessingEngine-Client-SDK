@@ -14,24 +14,45 @@ $CTComSDK->start_job($json_input, $job_id);
 Call this method to start a new Transcoding Job. This method will take your JSON payload and will send it to the 'input' SQS queue configured for your client.
 </aside>
 
-The JSON input you pass in parameter contains information about the input file you want to transcode, and an array of objects listing and describing the output files you want.
+The JSON input you pass in parameter contains information task you want to execute. You can analyse assets or transcode them.
 
-Each object in the output array, describe one output file. They could be of different types. For example you can generate an AUDIO file out of a VIDEO. Or a THUMB out of a VIDEO.
+When transcoding assets, you need to specify an "output" that contains the resulting output you want.
 
-The most simple and obvious usage is VIDEO to VIDEO.
+## Cancel Job
+TODO
 
-<b>See JSON input example at:</b><br>
-<a href="https://github.com/sportarchive/CloudTranscode/tree/master/client_example/input_samples" target="_blank">https://github.com/sportarchive/CloudTranscode/tree/master/client_example/input_samples</a>
+## Get Job List
+TODO
 
-### Input description
+## Get Job Status
+TODO
 
+# Input description
+
+## Workflow
 ```json
 {
+	"workflow": {
+		    "name": "SATranscode",
+		    "version": "1.0",
+		    "taskList": "SATranscodeThumb",
+		    "domain": "SADomain"
+    	},
+...
+```
+This describes the workflow where to submit your job to. The workflow is defined in the Plan YAML submitted to your Decider.
+
+For more information about the Decider and the plans, visit: 
+
+## Input File
+```json
+...
 	"input_type": "VIDEO",
 	"input_bucket": "ClientA-bucket-in",
 	"input_file": "/input1/test1.mp4",
 	"outputs": 
 	[
+...
 ```
 This describe the JSON field describing the input file.
 
@@ -43,7 +64,17 @@ input_file | string | none | yes | filename of the file to download | any
 job_label | string | job_id | no | Give a name to your job | any
 outputs | array | none | yes | List of all the outputs needed for that job | array of max 100 entries
 
-### Common Output description
+## Common Output description
+```json
+{
+...
+    "output": {
+            "output_type": "VIDEO",
+            "output_bucket": "ClientA-bucket-out",
+            "output_file": "/output1/test1_sd.mp4",
+            "s3_rrs": true,
+            "s3_encrypt": true,
+```
 
 These are the common JSON fields describing any output files of any types.
 
@@ -57,12 +88,11 @@ output_file | string | none | yes | Path and filename of the file to generate an
 s3_rrs | string | false | no | Activate Reduced redundancy or not in S3 storage | true, false
 s3_encrypt | string | false | no | Activate backend storage encryption | true,false
 
-### Video Output description
+## Video Output description
 ```json
 {
 ...
-    "outputs": [
-        {
+    "output": {
             "output_type": "VIDEO",
             "output_bucket": "ClientA-bucket-out",
             "output_file": "/output1/test1_sd.mp4",
@@ -87,9 +117,8 @@ s3_encrypt | string | false | no | Activate backend storage encryption | true,fa
                   "x": -20,
                   "y": -20
             }
-        }
-    ]
-}
+     }
+ }
 ```
 
 There are the JSON fields describing VIDEO output files.
@@ -107,9 +136,8 @@ watermark | object | none | no | Describe watermark for the video | see <a href=
 keep_ratio | boolean | true | no | Keep the ratio of the original video. 4:3 or 16:9 | true,false
 no_enlarge | boolean | true | no | Prevent enlarging the video size from original, even if bigger size is provided. | true,false
 
-#### Watermark object
+### Watermark object
 ```json
-{
 ...
     "watermark": {
         "input_bucket": "ClientA-bucket-in",
@@ -120,7 +148,6 @@ no_enlarge | boolean | true | no | Prevent enlarging the video size from origina
         "y": -20
     }
 ...
-}
 ```
 
 Use this object within a VIDEO output description to overlay an image on top of the video.
@@ -136,15 +163,14 @@ opacity |string |0.7 |no |Change the default watermark opacity |0.1 to 1.0
 x |string |-10 |no |Change the watermark position. In pixels. |-0 to -n, 0 to n
 y |string |-10 |no |Change the watermark position. In pixels. |-0 to -n, 0 to n
 
-### Thumb Output description
+## Thumb Output description
 > Generates a thumbnail from a precise location in the video (in seconds)
 
 ```json
 {
 ...
-    "outputs": [
-        {
-	    "output_type": "THUMB",
+    "output": {
+            "output_type": "THUMB",
             "mode": "snapshot",
             "output_bucket": "ClientA-bucket-out",
             "output_file": "/output1/thumbs/test1_thumb.jpg",
@@ -152,8 +178,7 @@ y |string |-10 |no |Change the watermark position. In pixels. |-0 to -n, 0 to n
             "s3_encrypt": true,
             "size": "160x120",
             "snapshot_sec": 5
-        }
-    ]
+    }
 }
 ```
 
@@ -162,8 +187,7 @@ y |string |-10 |no |Change the watermark position. In pixels. |-0 to -n, 0 to n
 ```json
 {
 ...
-    "outputs": [
-        {
+    "output": {
             "output_type": "THUMB",
             "mode": "intervals",
             "output_bucket": "ClientA-bucket-out",
@@ -172,8 +196,7 @@ y |string |-10 |no |Change the watermark position. In pixels. |-0 to -n, 0 to n
             "s3_encrypt": true,
             "size": "160x120",
             "intervals": 5
-        }
-    ]
+    }
 }
 ```
 
@@ -187,10 +210,3 @@ output_file |string |none |yes |filename for your thumbnails.We will append sequ
 intervals |integer |10 |no |Override default interval in seconds. |any
 snapshot_sec |interger |0 |no |Second in the video when to take the snapshot |any
 size |string |none |yes |Size of the thumbnails |any
-
-## Cancel Job
-
-## Get Job List
-
-## Get Job Status
-
