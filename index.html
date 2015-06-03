@@ -43,7 +43,8 @@
         </ul>
       <h5 style="text-align: center; color: #fff">Project sponsored by</h5>
       <h5 style="text-align: center;"><img src="images/logo.png" /></h5>
-      <h5 style="text-align: center; color: #fff">Sport Archive Inc.</h5>
+      <h5 style="text-align: center; color: #fff; margin-bottom: 0px;">Sport Archive Inc.</h5>
+      <div style="text-align: center; margin-bottom: 0px; "><a href="#" style="color: #fff">http://sportarchive.tv</a></div>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
@@ -146,22 +147,47 @@ You can also install it by hand by just copying the file in your project.
 Call this method to start a new Transcoding Job. This method will take your JSON payload and will send it to the &lsquo;input&rsquo; SQS queue configured for your client.
 </aside>
 
-<p>The JSON input you pass in parameter contains information about the input file you want to transcode, and an array of objects listing and describing the output files you want.</p>
+<p>The JSON input you pass in parameter contains information task you want to execute. You can analyse assets or transcode them.</p>
 
-<p>Each object in the output array, describe one output file. They could be of different types. For example you can generate an AUDIO file out of a VIDEO. Or a THUMB out of a VIDEO.</p>
+<p>When transcoding assets, you need to specify an &ldquo;output&rdquo; that contains the resulting output you want.</p>
 
-<p>The most simple and obvious usage is VIDEO to VIDEO.</p>
+<h2 id="cancel-job">Cancel Job</h2>
 
-<p><b>See JSON input example at:</b><br>
-<a href="https://github.com/sportarchive/CloudTranscode/tree/master/client_example/input_samples" target="_blank">https://github.com/sportarchive/CloudTranscode/tree/master/client_example/input_samples</a></p>
+<p>TODO</p>
 
-<h3 id="input-description">Input description</h3>
+<h2 id="get-job-list">Get Job List</h2>
+
+<p>TODO</p>
+
+<h2 id="get-job-status">Get Job Status</h2>
+
+<p>TODO</p>
+
+<h1 id="input-description">Input description</h1>
+
+<h2 id="workflow">Workflow</h2>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"input_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VIDEO"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"input_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-in"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"input_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/input1/test1.mp4"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> 
+    </span><span class="s2">"workflow"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SATranscode"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.0"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"taskList"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SATranscodeThumb"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"domain"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SADomain"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span></code></pre>
+
+<p>This describes the workflow where to submit your job to. The workflow is defined in the Plan YAML submitted to your Decider.</p>
+
+<p>For more information about the Decider and the plans, visit: </p>
+
+<h2 id="input-file">Input File</h2>
+<pre class="highlight json"><code><span class="err">...</span><span class="w">
+    </span><span class="s2">"input_type"</span><span class="err">:</span><span class="w"> </span><span class="s2">"VIDEO"</span><span class="err">,</span><span class="w">
+    </span><span class="s2">"input_bucket"</span><span class="err">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-in"</span><span class="err">,</span><span class="w">
+    </span><span class="s2">"input_file"</span><span class="err">:</span><span class="w"> </span><span class="s2">"/input1/test1.mp4"</span><span class="err">,</span><span class="w">
+    </span><span class="s2">"outputs"</span><span class="err">:</span><span class="w"> 
     </span><span class="p">[</span><span class="w">
+</span><span class="err">...</span><span class="w">
 </span></code></pre>
 
 <p>This describe the JSON field describing the input file.</p>
@@ -218,7 +244,16 @@ Call this method to start a new Transcoding Job. This method will take your JSON
 </tr>
 </tbody></table>
 
-<h3 id="common-output-description">Common Output description</h3>
+<h2 id="common-output-description">Common Output description</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+</span><span class="err">...</span><span class="w">
+    </span><span class="s2">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"output_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VIDEO"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"output_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-out"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"output_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/output1/test1_sd.mp4"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s3_rrs"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"s3_encrypt"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+</span></code></pre>
 
 <p>These are the common JSON fields describing any output files of any types.</p>
 
@@ -276,11 +311,10 @@ Call this method to start a new Transcoding Job. This method will take your JSON
 </tr>
 </tbody></table>
 
-<h3 id="video-output-description">Video Output description</h3>
+<h2 id="video-output-description">Video Output description</h2>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="err">...</span><span class="w">
-    </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"output_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"VIDEO"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"output_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-out"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"output_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/output1/test1_sd.mp4"</span><span class="p">,</span><span class="w">
@@ -305,9 +339,8 @@ Call this method to start a new Transcoding Job. This method will take your JSON
                   </span><span class="s2">"x"</span><span class="p">:</span><span class="w"> </span><span class="mi">-20</span><span class="p">,</span><span class="w">
                   </span><span class="s2">"y"</span><span class="p">:</span><span class="w"> </span><span class="mi">-20</span><span class="w">
             </span><span class="p">}</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+ </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
 <p>There are the JSON fields describing VIDEO output files.</p>
@@ -404,10 +437,9 @@ Call this method to start a new Transcoding Job. This method will take your JSON
 </tr>
 </tbody></table>
 
-<h4 id="watermark-object">Watermark object</h4>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-</span><span class="err">...</span><span class="w">
-    </span><span class="s2">"watermark"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+<h3 id="watermark-object">Watermark object</h3>
+<pre class="highlight json"><code><span class="err">...</span><span class="w">
+    </span><span class="s2">"watermark"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"input_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-in"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"input_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/watermark/logo.png"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75.2x28.4"</span><span class="p">,</span><span class="w">
@@ -416,7 +448,6 @@ Call this method to start a new Transcoding Job. This method will take your JSON
         </span><span class="s2">"y"</span><span class="p">:</span><span class="w"> </span><span class="mi">-20</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="err">...</span><span class="w">
-</span><span class="p">}</span><span class="w">
 </span></code></pre>
 
 <p>Use this object within a VIDEO output description to overlay an image on top of the video.</p>
@@ -483,16 +514,15 @@ Call this method to start a new Transcoding Job. This method will take your JSON
 </tr>
 </tbody></table>
 
-<h3 id="thumb-output-description">Thumb Output description</h3>
+<h2 id="thumb-output-description">Thumb Output description</h2>
 
 <blockquote>
 <p>Generates a thumbnail from a precise location in the video (in seconds)</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="err">...</span><span class="w">
-    </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"output_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"THUMB"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"output_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"THUMB"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"snapshot"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"output_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-out"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"output_file"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/output1/thumbs/test1_thumb.jpg"</span><span class="p">,</span><span class="w">
@@ -500,8 +530,7 @@ Call this method to start a new Transcoding Job. This method will take your JSON
             </span><span class="s2">"s3_encrypt"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
             </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"160x120"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"snapshot_sec"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
@@ -510,8 +539,7 @@ Call this method to start a new Transcoding Job. This method will take your JSON
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
 </span><span class="err">...</span><span class="w">
-    </span><span class="s2">"outputs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"output"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"output_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"THUMB"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"intervals"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"output_bucket"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ClientA-bucket-out"</span><span class="p">,</span><span class="w">
@@ -520,8 +548,7 @@ Call this method to start a new Transcoding Job. This method will take your JSON
             </span><span class="s2">"s3_encrypt"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
             </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="s2">"160x120"</span><span class="p">,</span><span class="w">
             </span><span class="s2">"intervals"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="w">
-        </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
@@ -586,12 +613,6 @@ Call this method to start a new Transcoding Job. This method will take your JSON
 <td>any</td>
 </tr>
 </tbody></table>
-
-<h2 id="cancel-job">Cancel Job</h2>
-
-<h2 id="get-job-list">Get Job List</h2>
-
-<h2 id="get-job-status">Get Job Status</h2>
 
           <h1 id="listening-for-updates">Listening for updates</h1>
 <pre class="highlight ruby"><code><span class="sr">/* Keep polling for messages! Forever ... */</span>
