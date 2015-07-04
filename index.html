@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>Cloud Transcode SDK reference</title>
+    <title>Cloud Processing Engine Client SDK reference</title>
 
     <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
@@ -27,7 +27,7 @@
     </a>
     <div class="tocify-wrapper">
       <div>
-	<h3 style="text-align: center; color: #fff">Cloud Transcode SDK</h3>
+	<h3 style="text-align: center; color: #fff">Cloud Processing Engine<br>Client SDK</h3>
       </div>
         <div class="lang-selector">
               <a href="#" data-language-name="php">PHP</a>
@@ -39,7 +39,7 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='http://sportarchive.github.io/CloudTranscode/' target="_blank">Cloud Transcode Stack documentation</a></li>
+            <li><a href='http://sportarchive.github.io/CloudProcessingEngine/' target="_blank">Cloud Processing Engine (CPE) documentation</a></li>
         </ul>
       <h5 style="text-align: center; color: #fff">Project sponsored by</h5>
       <h5 style="text-align: center;"><img src="images/logo.png" /></h5>
@@ -52,13 +52,14 @@
         <h1 id="introduction">Introduction</h1>
 
 <blockquote>
-<p>The PHP SDK repo is here:<br>
-<a href="https://github.com/sportarchive/CloudTranscode-PHP-SDK" target="_blank">https://github.com/sportarchive/CloudTranscode-PHP-SDK</a></p>
+<p>PHP implementation of this SDK is available here:<br>
+<a href="https://github.com/sportarchive/CloudProcessingEngine-PHP-Client-SDK" target="_blank">https://github.com/sportarchive/CloudTranscode-PHP-SDK</a></p>
 </blockquote>
 
-<p>Welcome to the Cloud Transcode (CT) SDK documentation.</p>
+<p>Welcome to the Cloud Processing Engine (CPE) Client SDK documentation.</p>
 
-<p>The CT SDK allow you to communicate with the CT stack:</p>
+<p>The CPE Client SDK allows you to communicate with the CPE stack through AWS SQS.
+You can use it to:</p>
 
 <ul>
 <li>Submit Jobs</li>
@@ -67,7 +68,7 @@
 <li>Get status</li>
 </ul>
 
-<p>It is a wrapper around AWS SQS. It reads and writes the proper JSON format expected by the CT stack.</p>
+<p>It is a simple AWS SQS interface. It reads and writes the proper JSON format expected by the CT stack.</p>
 
 <h1 id="dependencies">Dependencies</h1>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
